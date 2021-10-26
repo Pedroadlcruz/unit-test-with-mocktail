@@ -30,15 +30,17 @@ void main() {
     'Should create an acount from the repository',
     () async {
       //arrange
-      when(() async => mockAuthREpository.signUp(
-            userName: any.toString(),
-            email: any.toString(),
-            password: any.toString(),
-            firstName: any.toString(),
-            lastName: any.toString(),
-            phone: any.toString(),
-            identification: any.toString(),
-          )).thenAnswer((_) async => Right(responseModel));
+      when(
+        () => mockAuthREpository.signUp(
+          userName: any(named: 'userName'),
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+          firstName: any(named: 'firstName'),
+          lastName: any(named: 'lastName'),
+          phone: any(named: 'phone'),
+          identification: any(named: 'identification'),
+        ),
+      ).thenAnswer((_) async => Right(responseModel));
       // act
       final result = await usercase.execute(
         userName: userName,
@@ -51,15 +53,17 @@ void main() {
       );
       // assert
       expect(result, Right(responseModel));
-      verify<Future<Either<Failure, ResponseModel>>>(() async =>
-          mockAuthREpository.signUp(
-              userName: userName,
-              email: email,
-              password: password,
-              firstName: firstName,
-              lastName: lastName,
-              phone: phone,
-              identification: identification));
+      verify<Future<Either<Failure, ResponseModel>>>(
+        () => mockAuthREpository.signUp(
+          userName: userName,
+          email: email,
+          password: password,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phone,
+          identification: identification,
+        ),
+      );
       verifyNoMoreInteractions(mockAuthREpository);
     },
   );
